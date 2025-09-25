@@ -8,5 +8,4 @@ userRoutes.post('/otp-verify', otpVerify)
 userRoutes.post('/login', userLogin)
 
 
-
 module.exports = { userRoutes }

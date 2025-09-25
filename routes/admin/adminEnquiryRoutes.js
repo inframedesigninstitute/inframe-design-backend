@@ -8,6 +8,8 @@ adminEnquiryRoute.get('/view-state', enquiryStateView)
 adminEnquiryRoute.post('/add-city', enquiryCityAdd)
 adminEnquiryRoute.get('/view-city', enquiryCityView)
 adminEnquiryRoute.get('/all-entries', enquiryEntriesView)
+adminEnquiryRoute.get('/all-entries', enquiryEntriesView)
+
 
 
 module.exports = { adminEnquiryRoute }

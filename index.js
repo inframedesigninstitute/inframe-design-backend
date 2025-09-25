@@ -14,6 +14,10 @@ app.use('/admin', adminRoute)
 
 
 
+app.use('/uploads/onlineCourse', express.static('uploads/onlineCourse'))
+
+
+
 connectDB().then(async () => {
     //one time password working
     const adminExist = await adminModel.find()
@@ -27,3 +31,6 @@ connectDB().then(async () => {
         console.log(process.env.PORT)
     })
 })
+
+
+//onlineCourse
