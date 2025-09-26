@@ -1,61 +1,29 @@
 const express = require('express');
 const multer = require('multer');
-const sharp = require('sharp');
-const fs = require('fs');
 const path = require('path');
-
 const { addOnlineCourse, addOfflineCourse } = require('../../controllers/admin/admincourseController');
-const { addCategory, fetchCategory } = require('../../controllers/website/courseController');
+const { fetchOnlineCategory } = require('../../controllers/admin/adminCategoryController');
 
 const courseRoute = express.Router();
 
-// Memory storage since we will process with Sharp before saving
-const storage = multer.memoryStorage();
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        // Files ko "uploads" folder me save karo
+        cb(null, 'uploads/coursesImages');
+    },
+    filename: function (req, file, cb) {
+        // File name me current timestamp + original filename rakhte hain, taaki naam unique rahe
+        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+        // Extension bhi preserve karlo
+        const ext = path.extname(file.originalname);
+        cb(null, file.fieldname + '-' + uniqueSuffix + ext);
+    }
+});
+
+
 const upload = multer({ storage });
 
-// Helper function to convert and save images as webp
-const convertAndSaveImage = async (file, folderPath) => {
-    const fileName = `${Date.now()}-${file.originalname.split('.')[0]}.webp`;
-    const filePath = path.join(folderPath, fileName);
 
-    await sharp(file.buffer)
-        .webp({ quality: 80 })
-        .toFile(filePath);
-
-    return {
-        originalname: file.originalname,
-        filename: fileName,
-        path: filePath,
-        mimetype: 'image/webp',
-        size: file.size,
-    };
-};
-
-// Middleware to handle webp conversion
-const handleImageConversion = async (req, res, next) => {
-    try {
-        const imageFields = ['courseImage', 'courseBannerImage', 'courseHeroImage'];
-        const folderPath = path.join(__dirname, '../../uploads/coursesImages');
-
-        if (!fs.existsSync(folderPath)) fs.mkdirSync(folderPath, { recursive: true });
-
-        for (const field of imageFields) {
-            if (req.files && req.files[field]) {
-                const image = await convertAndSaveImage(req.files[field][0], folderPath);
-                req.body[field] = image; // Replace file info in body
-            }
-        }
-
-        next();
-    } catch (err) {
-        console.error('Image conversion failed:', err);
-        res.status(500).json({ status: 0, msg: 'Image processing failed', error: err });
-    }
-};
-
-// ===== ROUTES =====
-
-// ONLINE COURSE
 courseRoute.post(
     '/add-online',
     upload.fields([
@@ -64,7 +32,6 @@ courseRoute.post(
         { name: 'courseHeroImage', maxCount: 1 },
         { name: 'courseStudyMaterials', maxCount: 50 }, // these stay in original format (PDF etc)
     ]),
-    handleImageConversion,
     addOnlineCourse
 );
 
@@ -76,13 +43,12 @@ courseRoute.post(
         { name: 'courseBannerImage', maxCount: 1 },
         { name: 'courseHeroImage', maxCount: 1 },
     ]),
-    handleImageConversion,
     addOfflineCourse
 );
 
 
-courseRoute.post('/add-category', addCategory)
-courseRoute.get('/fetch-category', fetchCategory)
+courseRoute.post('/add-category', addOnlineCourse)
+courseRoute.get('/fetch-category', fetchOnlineCategory)
 
 
 module.exports = { courseRoute };

@@ -1,7 +1,12 @@
 const { Schema, default: mongoose } = require("mongoose")
 
-const offlineCourse = new mongoose.Schema({
+const offlineCourseSchema = new mongoose.Schema({
     courseName: String,
+    courseCategory: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'offlineCategory', // 👈 Reference to Category model
+        required: true
+    },
     courseImage: Object,
     cousreHeadline: String,
     courseAbout: String,
@@ -13,7 +18,7 @@ const offlineCourse = new mongoose.Schema({
     courseFaqsAnswer: Array
 })
 
-const offlineCourseModel = mongoose.model('offline-course', offlineCourse)
+const offlineCourseModel = mongoose.model('offline-course', offlineCourseSchema)
 
 
 module.exports = { offlineCourseModel }

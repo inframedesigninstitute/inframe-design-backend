@@ -1,74 +1,53 @@
-const { categoryModel } = require("../../models/categoryModel")
+const { offlineCourseModel } = require("../../models/offlineCourseModel");
 const { onlineCourseModel } = require("../../models/onlineCourseModel")
 
 const onlineCourseView = async (req, res) => {
     try {
-        const onlineCourseData = await onlineCourseModel.find().populate('courseCategory')
+        const onlineCourseData = await onlineCourseModel
+            .find()
+            .populate("courseCategory", "categoryName");  // courseCategory field ko populate karega, sirf categoryName laayega
+
         res.send({
             status: 1,
-            msg: 'online course data',
-            onlineCourseData
-        })
-    }
-    catch (err) {
+            msg: "online course data",
+            onlineCourseData,
+        });
+    } catch (err) {
         res.send({
-            status: 1,
-            msg: 'something went wrong',
-            err
-        })
+            status: 0,
+            msg: "kuch galat ho gaya",
+            err,
+        });
     }
-}
+};
 
-const addCategory = async (req, res) => {
 
+const offlineCourseView = async (req, res) => {
     try {
-        const { categoryName } = req.body
-        const categoryCheckInDb = await categoryModel.findOne({ categoryName })
-        if (!categoryCheckInDb) {
-            const category = new categoryModel({ categoryName })
-            const categoryRes = await category.save()
-            res.send({
-                status: 1,
-                msg: 'category api',
-                categoryRes
-
-            })
-        }
-        else {
-            res.send({
-                status: 2,
-                msg: 'category already exist ',
-            })
-        }
-
-    }
-    catch (err) {
+        const offlineCourseData = await offlineCourseModel
+            .find()
+            .populate("courseCategory", "categoryName");  // courseCategory field ko populate karega, sirf categoryName laayega
         res.send({
             status: 1,
-            msg: 'something went wrong',
-            err
-
-        })
-    }
-}
-
-const fetchCategory = async (req, res) => {
-    try {
-        const categoryData = await categoryModel.find()
+            msg: "offline course data",
+            offlineCourseData,
+        });
+    } catch (err) {
         res.send({
-            status: 1,
-            msg: 'category data',
-            categoryData
-        })
+            status: 0,
+            msg: "kuch galat ho gaya",
+            err,
+        });
     }
-    catch (err) {
-        res.send({
-            status: 1,
-            msg: 'something went wrong',
-            err
-        })
-    }
-}
+};
 
 
-module.exports = { onlineCourseView, addCategory, fetchCategory }
+
+
+
+
+
+
+
+
+module.exports = { onlineCourseView, offlineCourseView }

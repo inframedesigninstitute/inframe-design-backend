@@ -1,5 +1,6 @@
 const express = require('express')
 const cors = require('cors')
+const bcrypt = require('bcrypt')
 const { websiteRoute } = require('./routes/website/webRoutes')
 const connectDB = require('./configs/dbConfig')
 const { adminModel } = require('./models/adminModel')
@@ -22,9 +23,10 @@ connectDB().then(async () => {
     //one time password working
     const adminExist = await adminModel.find()
     if (adminExist.length == 0) {
+        const hashedPassword = await bcrypt.hash("admin123", 10); // 10 = salt rounds
         await adminModel.insertOne({
             admin_userEmail: "admin@123",
-            admin_userPassword: "admin123"
+            admin_userPassword: hashedPassword
         })
     }
     app.listen(process.env.PORT, () => {

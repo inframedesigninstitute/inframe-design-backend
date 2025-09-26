@@ -4,7 +4,7 @@ const onlineCourseSchema = new mongoose.Schema({
     courseName: String,
     courseCategory: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'category', // 👈 Reference to Category model
+        ref: 'onlineCategory', // 👈 Reference to Category model
         required: true
     },
     courseImage: Object,
