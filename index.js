@@ -28,7 +28,7 @@ app.use(cors({
 }));
 
 // Optional: respond to preflight requests
-app.options('*', cors());
+app.options('/*', cors());
 
 
 
