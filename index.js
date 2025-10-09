@@ -9,8 +9,8 @@ require('dotenv').config()
 const app = express()
 app.use(express.json())
 const allowedOrigins = [
-    'http://localhost:3000', // dev frontend
-    'https://yourfrontenddomain.com' // replace with your actual frontend live URL
+    'https://inframedesigninstitute.com', // dev frontend
+    'https://inframe-design-admin.vercel.app/' // replace with your actual frontend live URL
 ];
 
 app.use(cors({
