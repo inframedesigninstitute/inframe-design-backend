@@ -8,7 +8,22 @@ const { adminRoute } = require('./routes/admin/adminRoutes')
 require('dotenv').config()
 const app = express()
 app.use(express.json())
-app.use(cors())
+const allowedOrigins = [
+    'http://localhost:3000', // dev frontend
+    'https://yourfrontenddomain.com' // replace with your actual frontend live URL
+];
+
+app.use(cors({
+    origin: function (origin, callback) {
+        if (!origin || allowedOrigins.includes(origin)) {
+            callback(null, true);
+        } else {
+            callback(new Error('Not allowed by CORS'));
+        }
+    },
+    credentials: true
+}));
+
 
 app.use('/web', websiteRoute)
 app.use('/admin', adminRoute)
