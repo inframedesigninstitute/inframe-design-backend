@@ -8,9 +8,11 @@ const { adminRoute } = require('./routes/admin/adminRoutes')
 require('dotenv').config()
 const app = express()
 app.use(express.json())
+
+
 const allowedOrigins = [
-    'https://inframedesigninstitute.com', // dev frontend
-    'https://inframe-design-admin.vercel.app/' // replace with your actual frontend live URL
+    'https://inframedesigninstitute.com',
+    'https://inframe-design-admin.vercel.app' // ✅ No trailing slash
 ];
 
 app.use(cors({
@@ -21,8 +23,13 @@ app.use(cors({
             callback(new Error('Not allowed by CORS'));
         }
     },
+    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
     credentials: true
 }));
+
+// Optional: respond to preflight requests
+app.options('*', cors());
+
 
 
 app.use('/web', websiteRoute)
