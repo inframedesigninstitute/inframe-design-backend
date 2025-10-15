@@ -12,9 +12,9 @@ app.use(express.json())
 
 
 const allowedOrigins = [
-    'https://inframedesigninstitute.com',
+    'https://www.inframedesigninstitute.com/',
     'https://inframe-design-admin.vercel.app',
-    'https://design-institute.vercel.app/',
+    'https://design-institute.vercel.app',
     'http://localhost:3000',
     'http://localhost:3001',
 ];
