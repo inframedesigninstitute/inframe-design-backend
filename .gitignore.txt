@@ -1,0 +1,44 @@
+# Node modules
+node_modules/
+
+# Build output
+dist/
+build/
+
+# Logs
+*.log
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Environment files
+.env
+.env.local
+
+# IDEs
+.vscode/
+.idea/
+
+# Dependency directories
+bower_components/
+jspm_packages/
+
+# Compiled source #
+*.com
+*.class
+*.dll
+*.exe
+*.o
+*.so
+
+# Python cache
+__pycache__/
+*.py[cod]
+
+# MacOS metadata
+*.DS_Store
+
+# Temporary files
+*.tmp
+*.swp
