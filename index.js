@@ -17,6 +17,7 @@ const allowedOrigins = [
     'https://design-institute.vercel.app',
     'http://localhost:3000',
     'http://localhost:3001',
+    'http://72.60.206.137:9200'
 ];
 
 app.use(cors({
